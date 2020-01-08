@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace JYSK_EMDAS_XML //Version 0.1.2 //
+namespace JYSK_EMDAS_XML //Version 0.1.9 //
 {
     class Program
     {
@@ -64,6 +64,7 @@ namespace JYSK_EMDAS_XML //Version 0.1.2 //
             //writer.WriteElementString("ConIndHEA96", "a");
             writer.WriteElementString("IdeOfMeaOfTraAtDHEA78", (ws.Cells["B45"].Value ?? "").ToString());
             writer.WriteElementString("IdeOfMeaOfTraCroHEA85", (ws.Cells["B46"].Value ?? "").ToString());
+            writer.WriteElementString("NatOfMeaOfTraCroHEA87", (ws.Cells["B47"].Value ?? "").ToString());
             writer.WriteElementString("ECSAccDocHEA601", "LV");
             //writer.WriteElementString("TotNumOfIteHEA305", "a");
             writer.WriteElementString("DecPlaHEA394", (ws.Cells["B71"].Value ?? "").ToString());
@@ -140,7 +141,7 @@ namespace JYSK_EMDAS_XML //Version 0.1.2 //
                     writer.WriteElementString("ProReqGDI1", (ws.Cells[row, 17].Value ?? "").ToString());
                     writer.WriteElementString("PreProGDI1", (ws.Cells[row, 18].Value ?? "").ToString());
                     writer.WriteElementString("ComNatProGIM1", (ws.Cells[row, 19].Value ?? "").ToString());
-                //writer.WriteElementString("StaValAmoGDI1", (ws.Cells[row, 5].Value ?? "").ToString()); R - bet nepareizs....
+                    writer.WriteElementString("StaValAmoGDI1", (ws.Cells[row, 5].Value ?? "").ToString());
                     writer.WriteElementString("AmoInvGDI1", (ws.Cells[row, 5].Value ?? "").ToString());
                     writer.WriteElementString("CouOfOriGDI1", (ws.Cells[row, 8].Value ?? "").ToString());
                     writer.WriteElementString("SupUniGDI1", (ws.Cells[row, 25].Value ?? "").ToString());
@@ -244,10 +245,10 @@ namespace JYSK_EMDAS_XML //Version 0.1.2 //
 
                 // DELIVERY TERMS //
 
-                //writer.WriteStartElement("DELTER");
-                //writer.WriteElementString("IncCodTDL1", "MESSAGE - (TERMS) DELIVERY.Incoterm Code - a3");
-                //writer.WriteElementString("ComInfDELTER387", "MESSAGE - (TERMS) DELIVERY.Complement of info - an..35");
-                //writer.WriteEndElement();
+                writer.WriteStartElement("DELTER");
+                writer.WriteElementString("IncCodTDL1", (ws.Cells["B41"].Value ?? "").ToString());
+                writer.WriteElementString("ComInfDELTER387", (ws.Cells["B42"].Value ?? "").ToString());
+                writer.WriteEndElement();
 
                 // TRANSACTION DATA //
 
@@ -255,8 +256,8 @@ namespace JYSK_EMDAS_XML //Version 0.1.2 //
                 writer.WriteElementString("CurTRD1", (ws.Cells["B58"].Value ?? "").ToString());
             //writer.WriteElementString("TotAmoInvTRD1", (ws.Cells["B58"].Value ?? "").ToString());
             //writer.WriteElementString("ExcRatTRD1", (ws.Cells["B58"].Value ?? "").ToString());
-            writer.WriteElementString("NatOfTraFirCodTRD1", (ws.Cells["B59"].Value ?? "").ToString());
-            writer.WriteEndElement();
+                writer.WriteElementString("NatOfTraFirCodTRD1", (ws.Cells["B59"].Value ?? "").ToString());
+                writer.WriteEndElement();
 
                 // DEFERRED OR POSTPONED PAYMENT //
 
