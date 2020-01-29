@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace JYSK_EMDAS_XML //Version 0.1.9 //
+namespace JYSK_EMDAS_XML //Version 1.2 //
 {
     class Program
     {
@@ -131,7 +131,7 @@ namespace JYSK_EMDAS_XML //Version 0.1.9 //
                     {
                         goto afterGoods;
                     }
-
+                    decimal stat = 0;
                     writer.WriteStartElement("GOOITEGDS");
                     writer.WriteElementString("IteNumGDS7", (ws.Cells[row, 1].Value ?? "").ToString());
                     writer.WriteElementString("GooDesGDS23", (ws.Cells[row, 13].Value ?? "").ToString());
@@ -141,7 +141,16 @@ namespace JYSK_EMDAS_XML //Version 0.1.9 //
                     writer.WriteElementString("ProReqGDI1", (ws.Cells[row, 17].Value ?? "").ToString());
                     writer.WriteElementString("PreProGDI1", (ws.Cells[row, 18].Value ?? "").ToString());
                     writer.WriteElementString("ComNatProGIM1", (ws.Cells[row, 19].Value ?? "").ToString());
+                    if ((ws.Cells["B58"].Value ?? (object)"").ToString() == "EUR")
+                    {
                     writer.WriteElementString("StaValAmoGDI1", (ws.Cells[row, 5].Value ?? "").ToString());
+                    }
+                    else
+                    {
+                    decimal kurss = Convert.ToDecimal(ws.Cells["D58"].Value ?? "");
+                    stat = Convert.ToDecimal(ws.Cells[row, 5].Value ?? "");
+                    writer.WriteElementString("StaValAmoGDI1", (stat * kurss).ToString("#.##"));
+                    }
                     writer.WriteElementString("AmoInvGDI1", (ws.Cells[row, 5].Value ?? "").ToString());
                     writer.WriteElementString("CouOfOriGDI1", (ws.Cells[row, 8].Value ?? "").ToString());
                     writer.WriteElementString("SupUniGDI1", (ws.Cells[row, 25].Value ?? "").ToString());
@@ -251,11 +260,31 @@ namespace JYSK_EMDAS_XML //Version 0.1.9 //
                 writer.WriteEndElement();
 
                 // TRANSACTION DATA //
-
+               // decimal sum = 0;
+               // decimal stat = 0;
+               // var nn = 0;
+               // for (nn = 76; nn > 50; nn++)
+               //                     {
+               //     if (ws.Cells[nn, 5].Value == null)
+               //     {
+               //         goto afterTraDat;
+               //     }
+               //         stat = Convert.ToDecimal(ws.Cells[nn, 5].Value ?? "");
+               //         sum = sum + stat;
+               //     }
+               // afterTraDat:
+               // decimal totalam = Convert.ToDecimal(ws.Cells["D58"].Value ?? "");
                 writer.WriteStartElement("TRADAT");
                 writer.WriteElementString("CurTRD1", (ws.Cells["B58"].Value ?? "").ToString());
-            //writer.WriteElementString("TotAmoInvTRD1", (ws.Cells["B58"].Value ?? "").ToString());
-            //writer.WriteElementString("ExcRatTRD1", (ws.Cells["B58"].Value ?? "").ToString());
+                //writer.WriteElementString("TotAmoInvTRD1", (sum * totalam).ToString("#.##"));
+                if ((ws.Cells["B58"].Value ?? (object)"").ToString() == "EUR")
+                    {
+                    writer.WriteElementString("ExcRatTRD1","1");
+                    }
+                    else
+                    {
+                writer.WriteElementString("ExcRatTRD1", (ws.Cells["D58"].Value ?? "").ToString());
+                }
                 writer.WriteElementString("NatOfTraFirCodTRD1", (ws.Cells["B59"].Value ?? "").ToString());
                 writer.WriteEndElement();
 
